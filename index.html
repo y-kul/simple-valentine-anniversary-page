@@ -1,0 +1,283 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./icons/favicon.ico">
+    <script src="./js/jquery-3.7.1.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <title>John & Laura</title>
+    <style>
+        @media screen and (max-width: 390px) {
+            .slideshow {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 600px;
+                max-height: 600px;
+                margin: 20px;
+            }
+        }
+
+        a,
+        h1,
+        text,
+        p,
+        h4,
+        h3,
+        h2 {
+            font-family: "roboto", sans-serif;
+            color: #fff;
+        }
+
+        body {
+            background-color: black;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-height: 800px;
+            overflow-x: hidden;
+        }
+
+        .slideshow {
+            background-color: #000;
+            border: #000;
+            display: flex;
+            justify-content: center;
+            min-height: 400px;
+            max-height: 400px;
+            box-shadow: 0px 10px 20px 20px rgb(41, 41, 41);
+        }
+
+        .slideshow img {
+            margin-top: 3%;
+            max-width: 90%;
+            max-height: 90%;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 90%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: justify;
+        }
+
+        iframe {
+            max-width: 90%;
+        }
+
+        #date {
+            position: absolute;
+            right: 20;
+            font-size: 19px;
+            -webkit-text-stroke-width: 1px;
+            -webkit-text-stroke-color: #000;
+        }
+
+        header {
+            position: relative;
+            width: 90%;
+            max-width: 1000px;
+        }
+
+        .heart {
+            position: absolute;
+            top: -50px;
+            color: white;
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkling 2s infinite;
+            z-index: -1;
+        }
+
+        @keyframes twinkling {
+            0% {
+                opacity: 0.2;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+
+            100% {
+                opacity: 0.2;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h4 id="date"></h4>
+    </header>
+    <div class="slideshow">
+        <img src="./img/1.jpeg" class="slides" style="display: block;">
+    </div>
+    <div class="container">
+        <h2 id="p_header"></h2>
+
+        <p>Attribution: Photos by Helena Lopes: https://www.pexels.com/@helenalopes/</p>
+        <!--Use your photos, delete this line completely-->
+
+        <p id="content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero incidunt eaque dolorem hic
+            possimus est, accusamus voluptas laboriosam quo a doloremque adipisci consectetur voluptate aspernatur culpa
+            in aperiam ratione perspiciatis.</p> <!--Some meaning sentences in <p> tags...-->
+        <iframe id="ytplayer" width="560" height="315"
+            src="https://www.youtube.com/embed/zpzdgmqIHOQ?enablejsapi=1&autoplay=1&mute=1&playsinline=1"
+            title="YouTube video player" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <!--Put here your favourite song URL -->
+    </div>
+</body>
+<script>
+
+    let photocount = 3;
+
+    $(document).ready(function () {
+        let index = 0;
+        for (let i = 2; i <= photocount; i++) {
+            const img = document.createElement('img');
+            img.src = `./img/${i}.jpeg`;
+            img.classList.add("slides");
+            img.style.display = "none";
+            $('.slideshow').append(img);
+        }
+
+        const slides = $(".slides");
+
+        function showSlides() {
+            slides.hide();
+            index = (index + 1) % slides.length;
+            slides.eq(index).fadeIn();
+        }
+
+        setInterval(showSlides, 3000);
+
+        const text = `05-10-25`; // Date or something else
+        const text2 = "❤️ John ∞ Laura ❤️"; // Your and valentine name
+        let textindex = 0;
+        let textindex2 = 0;
+
+        function writeLetter(content, where, index, time) {
+            if (index < content.length) {
+                $(`#${where}`).append(content[index]);
+                index++;
+                setTimeout(function () {
+                    writeLetter(content, where, index, time);
+                }, time);
+            }
+        }
+
+        writeLetter(text, "date", textindex, 500);
+        writeLetter(text2, "p_header", textindex2, 200);
+    });
+    $(document).ready(function () {
+        let heartCount = 50;
+        let heartInterval = 200;
+
+        function createheart() {
+            const heart = $('<div class="heart">❤️</div>');
+            const minSize = 10;
+            const maxSize = 30;
+            const size = Math.random() * (maxSize - minSize) + minSize;
+
+            heart.css({
+                'left': Math.random() * $(window).width() - 20 + 'px',
+                'font-size': size + 'px',
+                'animation-duration': (Math.random() * 5 + 5) + 's'
+            });
+
+            $('body').append(heart);
+
+
+            heart.animate({
+                top: $(window).height() + 'px',
+                opacity: 0
+            }, Math.random() * 5000 + 5000, function () {
+                $(this).remove();
+            });
+        }
+
+        setInterval(createheart, heartInterval);
+
+        for (let i = 0; i < heartCount; i++) {
+            createheart();
+        }
+    });
+    $(document).ready(function () {
+        const starCount = 50;
+
+        const screenWidth = $(window).width();
+        const screenHeight = $(window).height();
+
+        for (let i = 0; i < starCount; i++) {
+            let starSize = Math.random() * 3 + 1;
+            let posX = Math.random() * screenWidth;
+            let posY = Math.random() * screenHeight;
+
+            $("body").append(`<div class='star' style='width:${starSize}px; height:${starSize}px; top:${posY}px; left:${posX}px;'></div>`);
+        }
+    });
+
+    //YT
+    (function () {
+        const s = document.createElement('script');
+        s.src = "https://www.youtube.com/iframe_api";
+        document.head.appendChild(s);
+    })();
+
+    let player, unmuted = false;
+
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('ytplayer', {
+            playerVars: {
+                autoplay: 1,
+                mute: 1,
+                playsinline: 1,
+                rel: 0,
+                controls: 1,
+                enablejsapi: 1
+            },
+            events: {
+                onReady: () => player.playVideo()
+            }
+        });
+    }
+
+    // Unmute on first interact with page
+    function unlockSoundOnce() {
+        if (!player || unmuted) return;
+        try {
+            player.unMute();
+            player.setVolume(100);
+            player.playVideo();
+            unmuted = true;
+            window.removeEventListener('click', unlockSoundOnce);
+            window.removeEventListener('keydown', unlockSoundOnce);
+            window.removeEventListener('touchstart', unlockSoundOnce);
+        } catch (e) { /* mute */ }
+    }
+
+    window.addEventListener('click', unlockSoundOnce);
+    window.addEventListener('keydown', unlockSoundOnce);
+    window.addEventListener('touchstart', unlockSoundOnce, { passive: true });
+</script>
+
+</html>
